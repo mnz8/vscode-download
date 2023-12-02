@@ -1,33 +1,34 @@
 import os
 
 list = [
-    'Windows.x64.System-installer',
-    'Windows.x64.User-installer  ',
-    'Windows.x64.zip',
-    'Windows.Arm64.System-installer',
-    'Windows.Arm64.User-installer',
-    'Windows.Arm64.zip',
-    'Windows.x86.System-installer',
-    'Windows.x86.User-installer  ',
-    'Windows.x86.zip',
-    'macOS.Universal',
-    'macOS.Intel-chip',
-    'macOS.Apple-silicon',
-    'Linux.x64',
-    'Linux.x64.debian',
-    'Linux.x64.rpm',
-    'Linux.x64.snap',
-    'Linux.Arm32',
-    'Linux.Arm32.debian',
-    'Linux.Arm32.rpm',
-    'Linux.Arm64',
-    'Linux.Arm64.debian',
-    'Linux.Arm64.rpm',
+    "Windows.x64.System-installer",
+    "Windows.x64.User-installer  ",
+    "Windows.x64.zip",
+    "Windows.Arm64.System-installer",
+    "Windows.Arm64.User-installer",
+    "Windows.Arm64.zip",
+    "Windows.x86.System-installer",
+    "Windows.x86.User-installer  ",
+    "Windows.x86.zip",
+    "macOS.Universal",
+    "macOS.Intel-chip",
+    "macOS.Apple-silicon",
+    "Linux.x64",
+    "Linux.x64.debian",
+    "Linux.x64.rpm",
+    "Linux.x64.snap",
+    "Linux.Arm32",
+    "Linux.Arm32.debian",
+    "Linux.Arm32.rpm",
+    "Linux.Arm64",
+    "Linux.Arm64.debian",
+    "Linux.Arm64.rpm",
 ]
 
 for ele in list:
     os.mkdir(ele)
-'''
+
+"""
 https://update.code.visualstudio.com/1.73.1/linux-armhf/stable
 https://update.code.visualstudio.com/1.73.1/linux-deb-armhf/stable
 https://update.code.visualstudio.com/1.73.1/linux-rpm-armhf/stable
@@ -50,4 +51,4 @@ https://update.code.visualstudio.com/1.73.1/win32-x64-archive/stable
 https://update.code.visualstudio.com/1.73.1/win32/stable
 https://update.code.visualstudio.com/1.73.1/win32-user/stable
 https://update.code.visualstudio.com/1.73.1/win32-archive/stable
-'''
+"""
