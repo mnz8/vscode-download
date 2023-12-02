@@ -515,35 +515,40 @@ def download(url, out=None, key=None, key_max_len=None, bar=bar_adaptive):
     os.close(fd)
     os.unlink(tmpfile)
 
-    # set progress monitoring callback
-    def callback_charged(blocks, block_size, total_size):
-        # 'closure' to set bar drawing function in callback
-        callback_progress(blocks, block_size, total_size, bar_function=bar, key=key, key_max_len=key_max_len)
+    try:
+        # set progress monitoring callback
+        def callback_charged(blocks, block_size, total_size):
+            # 'closure' to set bar drawing function in callback
+            callback_progress(blocks, block_size, total_size, bar_function=bar, key=key, key_max_len=key_max_len)
 
-    if bar:
-        callback = callback_charged
-    else:
-        callback = None
+        if bar:
+            callback = callback_charged
+        else:
+            callback = None
 
-    if PY3K:
-        # Python 3 can not quote URL as needed
-        binurl = list(urlparse.urlsplit(url))
-        binurl[2] = urlparse.quote(binurl[2])
-        binurl = urlparse.urlunsplit(binurl)
-    else:
-        binurl = url
-    (tmpfile, headers) = ulib.urlretrieve(binurl, tmpfile, callback)
-    filename = detect_filename(url, out, headers)
-    if outdir:
-        filename = outdir + "/" + filename
+        if PY3K:
+            # Python 3 can not quote URL as needed
+            binurl = list(urlparse.urlsplit(url))
+            binurl[2] = urlparse.quote(binurl[2])
+            binurl = urlparse.urlunsplit(binurl)
+        else:
+            binurl = url
+        (tmpfile, headers) = ulib.urlretrieve(binurl, tmpfile, callback)
+        filename = detect_filename(url, out, headers)
+        if outdir:
+            filename = outdir + "/" + filename
 
-    # add numeric ' (x)' suffix if filename already exists
-    if os.path.exists(filename):
-        filename = filename_fix_existing(filename)
-    shutil.move(tmpfile, filename)
+        # add numeric ' (x)' suffix if filename already exists
+        if os.path.exists(filename):
+            filename = filename_fix_existing(filename)
+        shutil.move(tmpfile, filename)
 
-    #print headers
-    return filename
+        #print headers
+        return filename
+
+    finally:
+        if os.path.exists(tmpfile):
+            os.remove(tmpfile)
 
 
 usage = """\
