@@ -3,7 +3,7 @@ from urllib import request
 import wget_patch
 import time
 
-version = "1.84.2"
+version = "1.87.2"
 
 linkdict = {
     "Windows.x64.System-installer": "https://update.code.visualstudio.com/{version}/win32-x64/stable",
