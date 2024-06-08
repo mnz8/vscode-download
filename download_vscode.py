@@ -3,7 +3,7 @@ from urllib import request
 import wget_patch
 import time
 
-version = "1.87.2"
+version = "1.89.1"
 
 linkdict = {
     "Windows.x64.System-installer": "https://update.code.visualstudio.com/{version}/win32-x64/stable",
@@ -49,10 +49,13 @@ def delete_file(file_path):
     #     print("file not found")
 
 
-def wget_download(
-    url, dir_path, key=None, key_max_len=None, retry=0, delete_exists=False
-):
-    retry_times = retry
+def wget_download(key, value, key_max_len=None, delete_exists=False):
+
+    dir_path = version + "/" + key
+
+    create_folder(dir_path)
+
+    url = value.replace("{version}", version)
 
     redirected_url = request.urlopen(url).geturl()
 
@@ -64,26 +67,26 @@ def wget_download(
     try:
         wget_patch.download(redirected_url, dir_path, key, key_max_len)
     except Exception as e:
-        print(" error: ", e)
-        if retry_times > 0:
-            print(key, "retry times:", retry - retry_times + 1)
-            time.sleep(2)  # 防止请求频繁
-            wget_patch.download(redirected_url, dir_path, key, key_max_len)
-            retry_times -= 1
+        print("\n error: ", e)
+        return key
 
 
 def main():
     print("================ vscode version: %s ================\n" % version)
 
+    linkKeys = list(linkdict.keys())
     # terminal 打印使用
-    key_max_len = len(max(list(linkdict.keys()), key=len))
+    key_max_len = len(max(linkKeys, key=len))
 
-    for key, value in linkdict.items():
-        dir_path = version + "/" + key
+    whileKeys = linkKeys
 
-        create_folder(dir_path)
-        url = value.replace("{version}", version)
-        wget_download(url, dir_path, key, key_max_len, 3, True)
+    while len(whileKeys) > 0:
+        key = whileKeys[0]
+        value = linkdict[key]
+        r = wget_download(key, value, key_max_len, True)
+        if r:
+            whileKeys.append(key)
+        whileKeys.remove(key)
         time.sleep(2)  # 防止请求频繁
 
 
