@@ -478,6 +478,8 @@ def callback_progress(blocks, block_size, total_size, bar_function, key, key_max
     progress = bar_function(current_size, total_size, width, key, key_max_len)
     if progress:
         sys.stdout.write("\r" + progress)
+        # 返回进度信息
+        return progress
 
 
 def detect_filename(url=None, out=None, headers=None, default="download.wget"):
@@ -501,8 +503,11 @@ def download(url, out=None, key=None, key_max_len=None, bar=bar_adaptive):
 
     :param bar: function to track download progress (visualize etc.)
     :param out: output filename or directory
-    :return:    filename where URL is downloaded to
+    :return: tuple (filename, last_progress_message) where URL is downloaded to
     """
+    # 添加变量存储最后的进度信息
+    # 使用列表存储进度信息
+    last_progress = [""]
     # detect of out is a directory
     outdir = None
     if out and os.path.isdir(out):
@@ -519,7 +524,7 @@ def download(url, out=None, key=None, key_max_len=None, bar=bar_adaptive):
         # set progress monitoring callback
         def callback_charged(blocks, block_size, total_size):
             # 'closure' to set bar drawing function in callback
-            callback_progress(blocks, block_size, total_size, bar_function=bar, key=key, key_max_len=key_max_len)
+            last_progress[0] = callback_progress(blocks, block_size, total_size, bar_function=bar, key=key, key_max_len=key_max_len)
 
         if bar:
             callback = callback_charged
@@ -544,7 +549,7 @@ def download(url, out=None, key=None, key_max_len=None, bar=bar_adaptive):
         shutil.move(tmpfile, filename)
 
         #print headers
-        return filename
+        return filename, last_progress[0]
 
     finally:
         if os.path.exists(tmpfile):
