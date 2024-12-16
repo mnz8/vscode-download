@@ -6,7 +6,7 @@ import sys
 
 PY3K = sys.version_info >= (3, 0)
 
-version = "1.92.2"
+version = "1.95.3"
 
 linkdict = {
     "Windows.x64.System-installer": "https://update.code.visualstudio.com/{version}/win32-x64/stable",
@@ -85,7 +85,7 @@ def wget_download(key, value, key_max_len=None, delete_exists=False, log_filenam
             redirected_url = request.urlopen(url).geturl()
         except Exception as e:
             if log_filename:
-                write_log(log_filename, "获取 URL 失败: {0} - {1}".format(key, str(e)))
+                write_log(log_filename, "{0} 获取 URL 失败: {1}".format(key, str(e)))
             # 返回 key 表示下载失败
             return key
 
@@ -95,12 +95,8 @@ def wget_download(key, value, key_max_len=None, delete_exists=False, log_filenam
                 filename = wget_patch.filename_from_url(redirected_url)
                 delete_file(dir_path + "/" + filename)
             except Exception as e:
-                write_log(
-                    log_filename,
-                    "wget_patch.filename_from_url 失败: {0} - {1}".format(
-                        redirected_url, str(e)
-                    ),
-                )
+                write_log(log_filename, "redirected_url: {0}".format(redirected_url))
+                write_log(log_filename, "filename_from_url 失败: {0}".format(str(e)))
 
         try:
             downloaded_path, progress_info = wget_patch.download(
@@ -116,7 +112,7 @@ def wget_download(key, value, key_max_len=None, delete_exists=False, log_filenam
             return key
     except Exception as e:
         if log_filename:
-            write_log(log_filename, "未知错误: {0} - {1}".format(key, str(e)))
+            write_log(log_filename, "{0} 未知错误: {1}".format(key, str(e)))
         return key
 
 
