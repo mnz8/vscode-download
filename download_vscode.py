@@ -6,7 +6,7 @@ import sys
 
 PY3K = sys.version_info >= (3, 0)
 
-version = "1.95.3"
+version = "1.96.0"
 
 linkdict = {
     "Windows.x64.System-installer": "https://update.code.visualstudio.com/{version}/win32-x64/stable",
@@ -136,6 +136,9 @@ def main():
             whileKeys.append(key)
         whileKeys.remove(key)
         time.sleep(2)  # 防止请求频繁
+
+    write_log(log_filename, "")
+    write_log(log_filename, "success")
 
 
 main()
