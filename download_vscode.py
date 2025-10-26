@@ -6,7 +6,7 @@ import sys
 
 PY3K = sys.version_info >= (3, 0)
 
-version = "1.100.3"
+version = "1.104.3"
 
 linkdict = {
     "Windows.x64.System-installer": "https://update.code.visualstudio.com/{version}/win32-x64/stable",
